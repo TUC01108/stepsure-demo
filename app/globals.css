@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+:root {
+  --color-walnut: #241B14;
+  --color-walnut-light: #362A1E;
+  --color-oak: #C08A4E;
+  --color-oak-light: #DBAE7A;
+  --color-fieldstone: #EFEAE0;
+  --color-fieldstone-dark: #E2DACB;
+  --color-ink: #26211B;
+  --color-grout: #52616B;
+  --color-grout-light: #7C8B95;
+  --color-rust: #9C4A2E;
+  --color-paper: #FAF8F4;
+}
+
+@theme inline {
+  --color-walnut: var(--color-walnut);
+  --color-walnut-light: var(--color-walnut-light);
+  --color-oak: var(--color-oak);
+  --color-oak-light: var(--color-oak-light);
+  --color-fieldstone: var(--color-fieldstone);
+  --color-fieldstone-dark: var(--color-fieldstone-dark);
+  --color-ink: var(--color-ink);
+  --color-grout: var(--color-grout);
+  --color-grout-light: var(--color-grout-light);
+  --color-rust: var(--color-rust);
+  --color-paper: var(--color-paper);
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-public-sans);
+  --font-mono: var(--font-plex-mono);
+}
+
+* {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-public-sans), system-ui, sans-serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Herringbone motif, the signature structural device, used sparingly as
+   section dividers and hover textures to echo plank-flooring installation. */
+.herringbone-divider {
+  height: 14px;
+  background-image:
+    linear-gradient(45deg, var(--color-oak) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--color-oak) 25%, transparent 25%);
+  background-size: 14px 14px;
+  opacity: 0.35;
+}
+
+.herringbone-divider--dark {
+  background-image:
+    linear-gradient(45deg, var(--color-oak-light) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--color-oak-light) 25%, transparent 25%);
+  opacity: 0.5;
+}
+
+.focus-ring {
+  outline: none;
+}
+.focus-ring:focus-visible {
+  outline: 2px solid var(--color-rust);
+  outline-offset: 3px;
+}
