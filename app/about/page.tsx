@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { business } from "@/lib/business";
@@ -6,8 +7,16 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen">
       <Nav />
-      <section className="bg-walnut px-6 py-16 text-fieldstone">
-        <div className="mx-auto max-w-3xl">
+      <section className="relative overflow-hidden bg-walnut px-6 py-16 text-fieldstone">
+        <Image
+          src="/images/hero-floor.jpg"
+          alt=""
+          fill
+          priority
+          className="object-cover opacity-25"
+        />
+        <div className="absolute inset-0 bg-walnut/70" />
+        <div className="relative mx-auto max-w-3xl">
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-oak-light">About</p>
           <h1 className="mt-3 font-display text-4xl font-semibold md:text-5xl">
             Local, straightforward, and around for the long haul

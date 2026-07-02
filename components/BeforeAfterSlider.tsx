@@ -1,6 +1,12 @@
 "use client";
 
 import { useRef, useState, useCallback } from "react";
+import Image from "next/image";
+
+// Flip to true once real before/after photos are in /public/images/
+// (before.jpg and after.jpg). Falls back to illustrative graphics if the
+// files aren't there yet, so this is safe to flip early.
+const USE_REAL_PHOTOS = false;
 
 function DamagedPlanks() {
   return (
@@ -70,8 +76,10 @@ function HerringboneFloor() {
 
 export default function BeforeAfterSlider() {
   const [position, setPosition] = useState(50);
+  const [photosFailed, setPhotosFailed] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
+  const showRealPhotos = USE_REAL_PHOTOS && !photosFailed;
 
   const updateFromClientX = useCallback((clientX: number) => {
     const el = containerRef.current;
@@ -97,13 +105,35 @@ export default function BeforeAfterSlider() {
         onPointerLeave={() => (dragging.current = false)}
       >
         <div className="absolute inset-0">
-          <HerringboneFloor />
+          {showRealPhotos ? (
+            <Image
+              src="/images/after.jpg"
+              alt="Floor after repair"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover"
+              onError={() => setPhotosFailed(true)}
+            />
+          ) : (
+            <HerringboneFloor />
+          )}
         </div>
         <div
           className="absolute inset-0"
           style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
         >
-          <DamagedPlanks />
+          {showRealPhotos ? (
+            <Image
+              src="/images/before.jpg"
+              alt="Floor before repair"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover"
+              onError={() => setPhotosFailed(true)}
+            />
+          ) : (
+            <DamagedPlanks />
+          )}
         </div>
 
         <div className="absolute bottom-3 left-3 rounded-full bg-walnut/80 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-fieldstone">

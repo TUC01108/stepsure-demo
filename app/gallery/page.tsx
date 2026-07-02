@@ -1,14 +1,41 @@
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import { galleryItems } from "@/lib/gallery";
 
-const items = [
-  { title: "Herringbone oak, Rittenhouse Square", tone: "#C08A4E" },
-  { title: "Porcelain tile entryway, Wilmington DE", tone: "#8a97a0" },
-  { title: "Basement LVP, Cherry Hill NJ", tone: "#a97c4f" },
-  { title: "Refinished original oak, Bryn Mawr", tone: "#b98a55" },
-  { title: "Kitchen tile repair, South Philly", tone: "#7c8b95" },
-  { title: "Whole-home carpet, Allentown PA", tone: "#9c8265" },
-];
+function GalleryTile({ item }: { item: (typeof galleryItems)[number] }) {
+  const [failed, setFailed] = useState(false);
+
+  return (
+    <div className="group relative aspect-[4/3] overflow-hidden rounded-2xl">
+      {!failed ? (
+        <Image
+          src={item.file}
+          alt={item.title}
+          fill
+          sizes="(max-width: 768px) 100vw, 33vw"
+          className="object-cover transition-transform duration-300 group-hover:scale-105"
+          onError={() => setFailed(true)}
+        />
+      ) : (
+        <div
+          className="flex h-full w-full items-end p-5 transition-transform duration-300 group-hover:scale-105"
+          style={{ background: `linear-gradient(135deg, ${item.tone}, ${item.tone}cc)` }}
+        >
+          <p className="font-display text-sm font-semibold text-walnut/90">{item.title}</p>
+        </div>
+      )}
+      {!failed && (
+        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-walnut/80 to-transparent p-4">
+          <p className="font-display text-sm font-semibold text-fieldstone">{item.title}</p>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function GalleryPage() {
   return (
@@ -19,7 +46,8 @@ export default function GalleryPage() {
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-oak-light">Gallery</p>
           <h1 className="mt-3 font-display text-4xl font-semibold md:text-5xl">Recent work</h1>
           <p className="mt-4 max-w-xl text-fieldstone/75">
-            Placeholder tiles below, swap these for real job photos before this goes live.
+            Drop real job photos into /public/images/gallery, tiles below fall back to a
+            placeholder automatically until then.
           </p>
         </div>
       </section>
@@ -27,17 +55,8 @@ export default function GalleryPage() {
 
       <section className="mx-auto max-w-6xl px-6 py-16">
         <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
-          {items.map((item) => (
-            <div key={item.title} className="group overflow-hidden rounded-2xl">
-              <div
-                className="flex aspect-[4/3] items-end p-5 transition-transform duration-300 group-hover:scale-105"
-                style={{
-                  background: `linear-gradient(135deg, ${item.tone}, ${item.tone}cc)`,
-                }}
-              >
-                <p className="font-display text-sm font-semibold text-walnut/90">{item.title}</p>
-              </div>
-            </div>
+          {galleryItems.map((item) => (
+            <GalleryTile key={item.file} item={item} />
           ))}
         </div>
       </section>
